@@ -13,40 +13,68 @@ with open("config.json", "r", encoding="utf-8") as config_file:
 client = Groq(api_key=api_key)
 
 prompt = (
-    "Você é um pesquisador de segurança especializado em detectar vulnerabilidades de segurança.\n"
-    "Forneça a resposta apenas no seguinte formato:\n\n"
-    "vulnerabilidade: <SIM ou NÃO> | tipo de vulnerabilidade: N/A | nome da vulnerabilidade: N/A | explicação: <explicação para a previsão>.\n"
-    "Não inclua mais nada na resposta.\n\n"
-    "Usuário: Este trecho de código está sujeito a alguma vulnerabilidade de segurança?\n\n"
-    "<TRECHO_CODIGO>\n\n"
-    "Resposta:"
+    "You are a security researcher specialized in detecting security vulnerabilities.\n"
+    "Provide the answer only in the following format:\n\n"
+    "vulnerability: <YES or NO> | vulnerability type: N/A | vulnerability name: N/A | explanation: <explanation for the prediction>.\n"
+    "Do not include anything else in the response.\n\n"
+    "User: Is this code snippet subject to any security vulnerability?\n\n"
+    "<CODE_SNIPPET>\n\n"
+    "Answer:"
 )
 
 codigo = """
-package securibench.micro.aliasing;
+package securibench.micro.sanitizers;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import securibench.micro.BasicTestCase;
 import securibench.micro.MicroTestCase;
 
-public class Aliasing1 extends BasicTestCase implements MicroTestCase {
-	private static final String FIELD_NAME = "name";
+public class Sanitizers1 extends BasicTestCase implements MicroTestCase {
+    private static final String FIELD_NAME = "name";
+    private PrintWriter writer;
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-       String name = req.getParameter(FIELD_NAME);
-       String str = name;
-              
-       PrintWriter writer = resp.getWriter();
-       writer.println(str);                             
+        String name = req.getParameter(FIELD_NAME);
+        String clean = clean(name);
+        
+        writer = resp.getWriter();
+        resp.setContentType("text/html");
+        
+        writer.println("<html>");
+        writer.println("<b>" + name  + "</b>");                  			
+        writer.println("<b>" + clean + "</b>");                  			
+        writer.println("</html>");
+        
     }
     
+    private String clean(String name) {
+        StringBuffer buf = new StringBuffer();
+        for(int i = 0; i < name.length(); i++) {
+            char ch = name.charAt(i);
+            switch (ch) {
+                case '<':
+                    buf.append("&lt;"); break;
+                case '>':
+                    buf.append("&gt;"); break;
+                case '&':
+                    buf.append("&amp;"); break;
+                default:
+                    if(Character.isLetter(ch) || Character.isDigit(ch) || ch == '_') {
+                        buf.append(ch);
+                    } else {
+                        buf.append('?');
+                    }
+            }
+        }
+        
+        return buf.toString();
+    }
+
     public String getDescription() {
-        return "simple test of field assignment";
+        return "simple sanitization check";
     }
     
     public int getVulnerabilityCount() {
