@@ -25,22 +25,22 @@ except KeyError:
 client = Groq(api_key=api_key)
 
 # GROQ_MODELS_TO_USE = [
-#     "gemma2-9b-it",
-#     "meta-llama/Llama-Guard-4-12B",
-#     "llama-3.3-70b-versatile",
-#     "llama-3.1-8b-instant",
-#     "llama3-70b-8192",
-#     "llama3-8b-8192",
-#     "deepseek-r1-distill-llama-70b",
-#     "meta-llama/llama-4-maverick-17b-128e-instruct", 
-#     "meta-llama/llama-4-scout-17b-16e-instruct",  
-#     "mistral-saba-24b",
-#     "qwen-qwq-32b",
+#     "gemma2-9b-it", -- OK
+#     "meta-llama/Llama-Guard-4-12B", -- OK
+#     "llama-3.3-70b-versatile", --LIMITADA
+#     "llama-3.1-8b-instant", -- OK
+#     "llama3-70b-8192", -- OK
+#     "llama3-8b-8192", -- OK
+#     "deepseek-r1-distill-llama-70b", -- OK
+#     "meta-llama/llama-4-maverick-17b-128e-instruct",  -- OK
+#     "meta-llama/llama-4-scout-17b-16e-instruct",  -- OK
+#     "mistral-saba-24b", -- GEROU COM ERRO
+#     "qwen-qwq-32b", -- OK
 #     "compound-beta",
 #     "compound-beta-mini",
 # ]
 
-MODELO_IA_UTILIZADO = "llama-3.3-70b-versatile"
+MODELO_IA_UTILIZADO = "qwen-qwq-32b"
 
 def remove_java_comments(code):
     code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
@@ -183,7 +183,6 @@ if __name__ == "__main__":
     repo_root_directory = os.path.join("securibench", "micro")
 
     output_report_filename = "relatorio_analise_vulnerabilidade - " + MODELO_IA_UTILIZADO + ".xlsx"
-
 
     if not os.path.isdir(repo_root_directory):
         print(f"Erro: Diretório base para os códigos não encontrado: '{repo_root_directory}'")
