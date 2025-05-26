@@ -34,13 +34,14 @@ client = Groq(api_key=api_key)
 #     "deepseek-r1-distill-llama-70b", -- OK
 #     "meta-llama/llama-4-maverick-17b-128e-instruct",  -- OK
 #     "meta-llama/llama-4-scout-17b-16e-instruct",  -- OK
-#     "mistral-saba-24b", -- GEROU COM ERRO
+#     "mistral-saba-24b", -- APENAS PARA OUTRAS LINGUAS
 #     "qwen-qwq-32b", -- OK
-#     "compound-beta",
-#     "compound-beta-mini",
+#     "llama-guard-3-8b", -- OK
+    # "compound-beta", -- REMOVIDAS 
+    # "compound-beta-mini" -- REMOVIDAS 
 # ]
 
-MODELO_IA_UTILIZADO = "qwen-qwq-32b"
+MODELO_IA_UTILIZADO = "mistral-saba-24b"
 
 def remove_java_comments(code):
     code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
