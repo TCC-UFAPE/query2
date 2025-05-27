@@ -27,7 +27,7 @@ client = Groq(api_key=api_key)
 # GROQ_MODELS_TO_USE = [
 #     "gemma2-9b-it", -- OK
 #     "meta-llama/Llama-Guard-4-12B", -- OK
-#     "llama-3.3-70b-versatile", --LIMITADA
+#     "llama-3.3-70b-versatile", --OK
 #     "llama-3.1-8b-instant", -- OK
 #     "llama3-70b-8192", -- OK
 #     "llama3-8b-8192", -- OK
@@ -41,7 +41,7 @@ client = Groq(api_key=api_key)
     # "compound-beta-mini" -- REMOVIDAS 
 # ]
 
-MODELO_IA_UTILIZADO = "mistral-saba-24b"
+MODELO_IA_UTILIZADO = "llama-3.3-70b-versatile"
 
 def remove_java_comments(code):
     code = re.sub(r'/\*.*?\*/', '', code, flags=re.DOTALL)
